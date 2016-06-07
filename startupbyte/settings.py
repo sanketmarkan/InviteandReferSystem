@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+import djcelery
+djcelery.setup_loader()
+
+
+BROKER_HOST= "localhost"
+BROKER_USER= "guest"
+BROKER_PASSWORD= "guest"
+BROKER_PORT= 5672
+BROKER_VHOST= "/"
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'startupbyte@gmail.com'
@@ -46,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'djcelery',
     'inviterefer.apps.InvitereferConfig',
 ]
 

@@ -19,7 +19,7 @@ from rest_framework.decorators import detail_route
 from django.core.mail import send_mail
 from django.http import Http404
 from django.contrib.sessions.models import Session
-
+from task import Sendemail
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -98,7 +98,8 @@ class InviteNewViewSet(viewsets.ModelViewSet):
 																		serializer.data['postoffered'], 
 																			invitedby.organisation.name, 
 																				invitedby.user.username)
-		send_mail("New Invite",msg,'sanketmarkan',[serializer.data['emailid'],])
+		Sendemail.delay(msg,serializer.data['emailid'])
+		#send_mail("New Invite",msg,'sanketmarkan',[serializer.data['emailid'],])
 
 class ReferViewSet(viewsets.ModelViewSet):
 	queryset = Refer.objects.all()
@@ -113,7 +114,8 @@ class ReferViewSet(viewsets.ModelViewSet):
 		except:
 			msg = "Hi!\nYou have been reffered to join Startupbyte by %s.\n\n" %(self.request.user.username)
 		msg = msg + "Join By registering at localhost:8000/users with your emailid."
-		send_mail("New Refer",msg,'sanketmarkan',[serializer.data['emailid'],])
+		Sendemail.delay(msg,serializer.data['emailid'])
+		#send_mail("New Refer",msg,'sanketmarkan',[serializer.data['emailid'],])
 
 class OrganisationViewSet(viewsets.ModelViewSet):
 	queryset = Organisation.objects.all()
